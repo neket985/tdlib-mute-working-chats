@@ -28,7 +28,7 @@ object PropertiesHolder {
             }
             .toMap()
 
-        propsFromEnv.plus(propsFromSystem).plus(propsFromFile)
+        propsFromEnv.plus(propsFromFile).plus(propsFromSystem)
     } else {
         println("Properties file does not exists")
         exitProcess(-1)
