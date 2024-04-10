@@ -99,7 +99,8 @@ object AuthorizationStateHolder {
                 ClientHolder.getClient().send(TdApi.CheckAuthenticationCode(code), requestHandler)
             }
             TdApi.AuthorizationStateWaitPassword.CONSTRUCTOR -> {
-                val password = PromptService.promptString("Please enter password: ")
+                val password = PropertiesHolder.tgPassword
+                println("Entered password automatically [$password]")
                 ClientHolder.getClient().send(TdApi.CheckAuthenticationPassword(password), requestHandler)
             }
             TdApi.AuthorizationStateReady.CONSTRUCTOR -> {

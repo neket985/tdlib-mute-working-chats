@@ -1,7 +1,11 @@
 **/*build/
 bin/
 docs/
-ru/smirnov/muteworkingchats/TdApi.java
+src/main/java/ru/smirnov/muteworkingchats/TdApi.java
 td/
+tdlib/
+tdlib.log
+lib/
 # Project exclude paths
 /.gradle/
+.idea
