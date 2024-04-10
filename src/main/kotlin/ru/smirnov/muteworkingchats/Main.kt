@@ -34,7 +34,7 @@ object Main {
     }
 
     private const val commandsLine =
-        "Enter command (me - GetMe, sm <chatId> <message> - SendMessage, lo - LogOut, q - Quit): "
+        "Enter command (me - GetMe, lo - LogOut, q - Quit): "
 
     private fun command() {
         val command = PromptService.promptString(commandsLine)
