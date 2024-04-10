@@ -1,5 +1,6 @@
-package ru.smirnov.muteworkingchats
+package ru.smirnov.muteworkingchats.holder
 
+import java.io.File
 import kotlin.system.exitProcess
 
 object PropertiesHolder {
@@ -34,8 +35,10 @@ object PropertiesHolder {
         exitProcess(-1)
     }
 
+    val tgUserId = propsMap.getOrThrow("account.telegram.user-id").toLong()
     val tgPhone = propsMap.getOrThrow("account.telegram.phone")
     val tgPassword = propsMap.getOrThrow("account.telegram.password")
+    val chatIdsForUnmuteFilePrefix = propsMap.getOrThrow("storage.chat-ids-for-unmute-file-path")
 
     private fun Map<String, String>.getOrThrow(key: String) = this[key]
         ?: error("Не найдено значение для свойства [$key]")

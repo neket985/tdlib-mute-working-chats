@@ -1,7 +1,11 @@
-package ru.smirnov.muteworkingchats
+package ru.smirnov.muteworkingchats.holder
 
+import ru.smirnov.muteworkingchats.Client
+import ru.smirnov.muteworkingchats.PromptService
+import ru.smirnov.muteworkingchats.TdApi
 import ru.smirnov.muteworkingchats.util.defaultHandler
 import ru.smirnov.muteworkingchats.util.newLine
+import ru.smirnov.muteworkingchats.util.requestHandler
 import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReentrantLock
 
@@ -18,17 +22,6 @@ object AuthorizationStateHolder {
 
     @Volatile
     private var canQuit = false
-
-    private val requestHandler = Client.ResultHandler { obj ->
-        when (obj.constructor) {
-            TdApi.Error.CONSTRUCTOR -> {
-                System.err.println("Receive an error:" + newLine + obj)
-                onAuthorizationStateUpdated(null) // repeat last action
-            }
-            TdApi.Ok.CONSTRUCTOR -> {}
-            else -> System.err.println("Receive wrong response from TDLib:" + newLine + obj)
-        }
-    }
 
     fun waitGotAuthorisation() {
         authorizationLock.lock()
@@ -54,7 +47,7 @@ object AuthorizationStateHolder {
 
     fun onAuthorizationStateUpdated(authorizationStateParam: TdApi.AuthorizationState?) {
         if (authorizationStateParam != null) {
-            this.authorizationState = authorizationStateParam
+            authorizationState = authorizationStateParam
         }
         val authorizationState = authorizationState!!
 

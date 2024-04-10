@@ -1,5 +1,6 @@
-package ru.smirnov.muteworkingchats
+package ru.smirnov.muteworkingchats.holder
 
+import ru.smirnov.muteworkingchats.Client
 import ru.smirnov.muteworkingchats.handler.MainHandler
 
 object ClientHolder {
@@ -11,5 +12,5 @@ object ClientHolder {
         client = createClient()
     }
 
-    fun createClient() = Client.create(MainHandler(), null, null)
+    fun createClient() = Client.create(MainHandler, null, null)
 }

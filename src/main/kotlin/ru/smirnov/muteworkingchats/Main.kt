@@ -1,10 +1,15 @@
 package ru.smirnov.muteworkingchats
 
 import ru.smirnov.muteworkingchats.Client.LogMessageHandler
+import ru.smirnov.muteworkingchats.holder.AuthorizationStateHolder
+import ru.smirnov.muteworkingchats.holder.ClientHolder
 import ru.smirnov.muteworkingchats.util.defaultHandler
+import ru.smirnov.muteworkingchats.worker.GetFolderChatsWorker
+import ru.smirnov.muteworkingchats.worker.GetFoldersWorker
+import ru.smirnov.muteworkingchats.worker.MuteFolderChatsWorker
+import ru.smirnov.muteworkingchats.worker.UnmuteFolderChatsWorker
 import java.io.IOError
 import java.io.IOException
-import java.util.*
 
 /**
  * Example class for TDLib usage from Java.
@@ -34,13 +39,17 @@ object Main {
     }
 
     private const val commandsLine =
-        "Enter command (me - GetMe, lo - LogOut, q - Quit): "
+        "Enter command (gfs - GetFolders, gfcs <folderId> - GetFolderChats, mute <folderId> - MuteFolderChats, unmute <folderId> - UnmuteFolderChats, me - GetMe, lo - LogOut, q - Quit): "
 
     private fun command() {
         val command = PromptService.promptString(commandsLine)
         val commands = command.split(" ".toRegex(), limit = 2).toTypedArray()
         try {
             when (commands[0]) {
+                "gfs" -> GetFoldersWorker.work()
+                "gfcs" -> GetFolderChatsWorker.work(commands[1].toInt())
+                "mute" -> MuteFolderChatsWorker.work(commands[1].toInt())
+                "unmute" -> UnmuteFolderChatsWorker.work(commands[1].toInt())
                 "me" -> ClientHolder.getClient().send(TdApi.GetMe(), defaultHandler)
                 "lo" -> AuthorizationStateHolder.logout()
                 "q" -> AuthorizationStateHolder.quit()
