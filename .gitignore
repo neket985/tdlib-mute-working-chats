@@ -1,0 +1,7 @@
+**/*build/
+bin/
+docs/
+ru/smirnov/muteworkingchats/TdApi.java
+td/
+# Project exclude paths
+/.gradle/
