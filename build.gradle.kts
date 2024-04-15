@@ -2,6 +2,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.9.23"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
+    application
+}
+configure<ApplicationPluginConvention> {
+    mainClassName = "ru.smirnov.muteworkingchats.Main"
 }
 
 group = "ru.smirnov"
@@ -16,7 +21,7 @@ repositories {
 }
 
 dependencies {
-
+    implementation("me.tongfei:progressbar:0.10.0")
 }
 
 tasks.withType<KotlinCompile> {
@@ -28,4 +33,10 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.shadowJar {
+    archiveBaseName.set("tdlib-mute-working-chats")
+    archiveClassifier.set("")
+    archiveVersion.set("")
 }

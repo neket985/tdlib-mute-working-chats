@@ -7,9 +7,9 @@ import kotlin.time.toTimeUnit
 
 interface WorkerI {
 
-    fun awaitForComplete(timeout: Duration = Duration.ofMinutes(5), block: (CompletableFuture<Any>) -> Unit) {
-        val future = CompletableFuture<Any>()
+    fun <T> awaitForComplete(timeout: Duration = Duration.ofMinutes(5), block: (CompletableFuture<T>) -> Unit): T {
+        val future = CompletableFuture<T>()
         block(future)
-        future.get(timeout.seconds, DurationUnit.SECONDS.toTimeUnit())
+        return future.get(timeout.seconds, DurationUnit.SECONDS.toTimeUnit())
     }
 }

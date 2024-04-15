@@ -4,10 +4,7 @@ import ru.smirnov.muteworkingchats.Client.LogMessageHandler
 import ru.smirnov.muteworkingchats.holder.AuthorizationStateHolder
 import ru.smirnov.muteworkingchats.holder.ClientHolder
 import ru.smirnov.muteworkingchats.util.defaultHandler
-import ru.smirnov.muteworkingchats.worker.GetFolderChatsWorker
-import ru.smirnov.muteworkingchats.worker.GetFoldersWorker
-import ru.smirnov.muteworkingchats.worker.MuteFolderChatsWorker
-import ru.smirnov.muteworkingchats.worker.UnmuteFolderChatsWorker
+import ru.smirnov.muteworkingchats.worker.*
 import java.io.IOError
 import java.io.IOException
 
@@ -43,13 +40,16 @@ object Main {
 
     private fun command() {
         val command = PromptService.promptString(commandsLine)
-        val commands = command.split(" ".toRegex(), limit = 2).toTypedArray()
+        val commands = command.split(" ".toRegex(), limit = 3).toTypedArray()
         try {
             when (commands[0]) {
                 "gfs" -> GetFoldersWorker.work()
                 "gfcs" -> GetFolderChatsWorker.work(commands[1].toInt())
+                "gcs" -> GetChatsWorker.work()
                 "mute" -> MuteFolderChatsWorker.work(commands[1].toInt())
                 "unmute" -> UnmuteFolderChatsWorker.work(commands[1].toInt())
+                "msgs" -> GetChatLastMessagesWorker.work(commands[1].toLong())
+                "msg" -> GetMessageWorker.work(commands[1].toLong(), commands[2].toLong())
                 "me" -> ClientHolder.getClient().send(TdApi.GetMe(), defaultHandler)
                 "lo" -> AuthorizationStateHolder.logout()
                 "q" -> AuthorizationStateHolder.quit()

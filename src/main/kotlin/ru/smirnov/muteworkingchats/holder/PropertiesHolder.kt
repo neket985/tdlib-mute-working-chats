@@ -23,7 +23,7 @@ object PropertiesHolder {
             .map { (k, v) ->
                 val solvedValue = v.trim().replace(templatePattern) {
                     val propName = it.groups["prop"]!!.value
-                    propsFromEnv[propName] ?: propsFromSystem[propName]!!
+                    propsFromEnv[propName] ?: propsFromSystem[propName] ?: ""
                 }
                 k.trim() to solvedValue
             }

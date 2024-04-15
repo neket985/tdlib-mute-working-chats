@@ -5,7 +5,7 @@ import ru.smirnov.muteworkingchats.PromptService
 import ru.smirnov.muteworkingchats.TdApi
 import ru.smirnov.muteworkingchats.util.defaultHandler
 import ru.smirnov.muteworkingchats.util.newLine
-import ru.smirnov.muteworkingchats.util.requestHandler
+import ru.smirnov.muteworkingchats.util.authRequestHandler
 import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReentrantLock
 
@@ -62,14 +62,14 @@ object AuthorizationStateHolder {
                 request.systemLanguageCode = "en"
                 request.deviceModel = "Desktop"
                 request.applicationVersion = "1.0"
-                ClientHolder.getClient().send(request, requestHandler)
+                ClientHolder.getClient().send(request, authRequestHandler)
             }
             TdApi.AuthorizationStateWaitPhoneNumber.CONSTRUCTOR -> {
                 val phoneNumber = PropertiesHolder.tgPhone
                 println("Entered phone number automatically [$phoneNumber]")
                 ClientHolder.getClient().send(
                     TdApi.SetAuthenticationPhoneNumber(phoneNumber, null),
-                    requestHandler,
+                    authRequestHandler,
                 )
             }
             TdApi.AuthorizationStateWaitOtherDeviceConfirmation.CONSTRUCTOR -> {
@@ -78,23 +78,23 @@ object AuthorizationStateHolder {
             }
             TdApi.AuthorizationStateWaitEmailAddress.CONSTRUCTOR -> {
                 val emailAddress = PromptService.promptString("Please enter email address: ")
-                ClientHolder.getClient().send(TdApi.SetAuthenticationEmailAddress(emailAddress), requestHandler)
+                ClientHolder.getClient().send(TdApi.SetAuthenticationEmailAddress(emailAddress), authRequestHandler)
             }
             TdApi.AuthorizationStateWaitEmailCode.CONSTRUCTOR -> {
                 val code = PromptService.promptString("Please enter email authentication code: ")
                 ClientHolder.getClient().send(
                     TdApi.CheckAuthenticationEmailCode(TdApi.EmailAddressAuthenticationCode(code)),
-                    requestHandler,
+                    authRequestHandler,
                 )
             }
             TdApi.AuthorizationStateWaitCode.CONSTRUCTOR -> {
                 val code = PromptService.promptString("Please enter authentication code: ")
-                ClientHolder.getClient().send(TdApi.CheckAuthenticationCode(code), requestHandler)
+                ClientHolder.getClient().send(TdApi.CheckAuthenticationCode(code), authRequestHandler)
             }
             TdApi.AuthorizationStateWaitPassword.CONSTRUCTOR -> {
                 val password = PropertiesHolder.tgPassword
                 println("Entered password automatically [$password]")
-                ClientHolder.getClient().send(TdApi.CheckAuthenticationPassword(password), requestHandler)
+                ClientHolder.getClient().send(TdApi.CheckAuthenticationPassword(password), authRequestHandler)
             }
             TdApi.AuthorizationStateReady.CONSTRUCTOR -> {
                 haveAuthorization = true
